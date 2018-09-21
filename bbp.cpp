@@ -35,7 +35,7 @@ void print_out_array(int *array, int size);;
 void bubble_sort(int *array, int size)
 {
 
-
+	std::cout << "size of array: " << size << "\n";
 
 	std::cout << "before, ";
 
@@ -158,12 +158,23 @@ int main( int argc, char** argv ) {
 
 	}//end for i
 
+	for(int i = 0; i <= number_of_buckets - 1; i ++)
+	{
+
+		bucket_sizes[i] = 0;
+
+
+	}//end for i
+
+
 	for(int i = 0; i <= size - 1; i ++)
 	{
 
 		//int assigned_bucket = floor((i / (double)size) * (double)number_of_buckets); 
 
 		double fraction = (double)array[i] / ((double) max_value + 1);
+
+		std::cout << "fraction: " << fraction << "\n";
 
 		int assigned_bucket = floor((fraction) * (double)number_of_buckets); 
 
