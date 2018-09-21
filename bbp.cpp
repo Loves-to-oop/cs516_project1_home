@@ -2,6 +2,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <math.h>
+#include <omp.h>
 // create an array of length size of random numbers
 // returns a pointer to the array
 
@@ -43,12 +44,13 @@ void bubble_sort(int *array, int size)
 
 
 	//int i = 0;
-
+#pragma omp parallel for
 	for(int i = 0; i <= size - 1; i ++)
 	{
 
 		//std::cout << "i: " << i << "\n";
 
+#pragma omp parallel for
 		for(int j = 1; j <= size - 1; j ++)
 		{
 
@@ -87,6 +89,7 @@ void print_out_array(int *array, int size)
 
 	int i = 0;
 
+	//#pragma omp parallel for
 	for(int i = 0; i <= size - 1; i ++)
 	{
 
@@ -149,6 +152,7 @@ int main( int argc, char** argv ) {
 
 	int max_value = 0;
 
+#pragma omp parallel for
 	for(int i = 0; i <= size - 1; i ++)
 	{
 
@@ -158,6 +162,7 @@ int main( int argc, char** argv ) {
 
 	}//end for i
 
+#pragma omp parallel for
 	for(int i = 0; i <= number_of_buckets - 1; i ++)
 	{
 
@@ -166,7 +171,7 @@ int main( int argc, char** argv ) {
 
 	}//end for i
 
-
+#pragma omp parallel for
 	for(int i = 0; i <= size - 1; i ++)
 	{
 
@@ -220,6 +225,14 @@ int main( int argc, char** argv ) {
 	//bubble_sort(array, size);
 
 	print_out_array(array, size);
+
+#pragma omp parallel for
+for(int i = 0; i <= 9; i ++)
+{
+
+	std::cout << i;
+
+}//end for loop
 
 
 	// delete the heap memory
