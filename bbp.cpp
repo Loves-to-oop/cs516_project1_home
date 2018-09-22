@@ -83,7 +83,7 @@ int bubble_sort(int *array, omp_lock_t mutex,  int size)
 
 		//std::cout << "i: " << i << "\n";
 
-		//#pragma omp parallel for
+		#pragma omp parallel for
 		for(int j = 1; j <= size - 1; j ++)
 		{
 
@@ -218,7 +218,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 	omp_set_num_threads(cores);
 
-//#pragma omp parallel for
+#pragma omp parallel for
 	for(int i = 0; i <= size - 1; i ++)
 	{
 
@@ -234,7 +234,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 	}//end for i
 
-//#pragma omp parallel for
+#pragma omp parallel for
 	for(int i = 0; i <= number_of_buckets - 1; i ++)
 	{
 
@@ -245,7 +245,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 
 
-//#pragma omp parallel for
+#pragma omp parallel for
 	for(int i = 0; i <= size - 1; i ++)
 	{
 
@@ -260,14 +260,6 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 		//	std::cout << "fraction: " << fraction << "\n";
 
 		int assigned_bucket = floor((fraction) * ((double)number_of_buckets)); 
-
-if(array[i] == 96303)
-{
-
-	std::cout << array[i] << " assigned to " << assigned_bucket << "\n";
-
-}//end if
-
 				//std::cout << array[i] << " / " << max_value << " * " << number_of_buckets << " = assigned bucket: " << assigned_bucket << "\n";
 
 		omp_set_lock(&mutex);
@@ -302,7 +294,7 @@ int total_fails = 0;
 			//adding current bucket
 			for(int j = 0; j <= bucket_sizes[i] - 1; j ++)
 			{
-				std::cout << "adding buckets[" << i << "][" << j << "]: " << buckets[i][j] << "\n";
+			//	std::cout << "adding buckets[" << i << "][" << j << "]: " << buckets[i][j] << "\n";
 				new_array[k] = buckets[i][j];
 
 				k++;
@@ -405,7 +397,7 @@ int main( int argc, char** argv ) {
 
 	std::cout << "min_buckets: " << min_buckets << "\n";
 
-	//number_of_buckets = floor((double)size / 10.0);
+	number_of_buckets = floor((double)size / 10.0);
 
 	number_of_buckets = 10;
 
