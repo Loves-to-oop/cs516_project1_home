@@ -1,4 +1,4 @@
-for ((i = 10; i <= 10000; i+=100))
+for ((i = 10; i <= 10000; i++))
 do
 ts=$(date +%s%N) ; 
 
@@ -6,6 +6,12 @@ ts=$(date +%s%N) ;
 			
 tt=$((($(date +%s%N) - $ts)/1000000)) ;
 
-echo "Array size: $i Time taken: $tt milliseconds"
+ts=$(date +%s%N) ; 
+
+./bbp $i 10
+			
+tt_bbp=$((($(date +%s%N) - $ts)/1000000)) ;
+
+echo "Size: $i bbs: $tt ms, bbp: $tt_bbp ms"
 		
 done

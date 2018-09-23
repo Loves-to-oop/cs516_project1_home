@@ -70,9 +70,9 @@ int bubble_sort(int *array, omp_lock_t mutex,  int size)
 
 	//	std::cout << "size of array: " << size << "\n";
 
-//	std::cout << "before, ";
+	//	std::cout << "before, ";
 
-//	print_out_array(array, size);
+	//	print_out_array(array, size);
 
 
 	//int i = 0;
@@ -117,14 +117,14 @@ int bubble_sort(int *array, omp_lock_t mutex,  int size)
 
 
 	//std::cout << "after, ";
-int fails = 0;
-//fails = test_sort(array, size);
+	int fails = 0;
+	//fails = test_sort(array, size);
 
-//	print_out_array(array, size);
+	//	print_out_array(array, size);
 
-//	std::cout << "fails: " << fails << "\n";
+	//	std::cout << "fails: " << fails << "\n";
 
-return fails;
+	return fails;
 
 }//end function
 
@@ -153,7 +153,7 @@ void test_openmp()
 
 
 
-//#pragma omp parallel for
+	//#pragma omp parallel for
 	for(int i = 0; i <= 9; i ++)
 	{
 
@@ -218,7 +218,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 	omp_set_num_threads(cores);
 
-//#pragma omp parallel for
+	//#pragma omp parallel for
 	for(int i = 0; i <= size - 1; i ++)
 	{
 
@@ -234,7 +234,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 	}//end for i
 
-//#pragma omp parallel for
+	//#pragma omp parallel for
 	for(int i = 0; i <= number_of_buckets - 1; i ++)
 	{
 
@@ -245,7 +245,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 
 
-//#pragma omp parallel for
+	//#pragma omp parallel for
 	for(int i = 0; i <= size - 1; i ++)
 	{
 
@@ -260,7 +260,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 		//	std::cout << "fraction: " << fraction << "\n";
 
 		int assigned_bucket = floor((fraction) * ((double)number_of_buckets)); 
-				//std::cout << array[i] << " / " << max_value << " * " << number_of_buckets << " = assigned bucket: " << assigned_bucket << "\n";
+		//std::cout << array[i] << " / " << max_value << " * " << number_of_buckets << " = assigned bucket: " << assigned_bucket << "\n";
 
 		omp_set_lock(&mutex);
 
@@ -281,7 +281,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 	int k = 0;
 
-int total_fails = 0;
+	int total_fails = 0;
 
 	//#pragma omp parallel for
 	for(int i = 0; i <= number_of_buckets - 1; i ++)
@@ -294,7 +294,7 @@ int total_fails = 0;
 			//adding current bucket
 			for(int j = 0; j <= bucket_sizes[i] - 1; j ++)
 			{
-			//	std::cout << "adding buckets[" << i << "][" << j << "]: " << buckets[i][j] << "\n";
+				//	std::cout << "adding buckets[" << i << "][" << j << "]: " << buckets[i][j] << "\n";
 				new_array[k] = buckets[i][j];
 
 				k++;
@@ -305,27 +305,27 @@ int total_fails = 0;
 
 	}//end for i
 
-fails_in_sorts += total_fails;
+	fails_in_sorts += total_fails;
 
 	//std::cout << "total fails: " << total_fails << "\n";
 
-/*
-for(int i = 0; i <= number_of_buckets - 1; i ++)
-{
-	std::cout << "bucket " << i << ": ";
+	/*
+	   for(int i = 0; i <= number_of_buckets - 1; i ++)
+	   {
+	   std::cout << "bucket " << i << ": ";
 
-	for(int j = 0; j <= bucket_sizes[i] - 1; j ++)
-	{
-	
-		std::cout << buckets[i][j] << ", ";
-	
-	}//end for j
+	   for(int j = 0; j <= bucket_sizes[i] - 1; j ++)
+	   {
 
-	std::cout << "\n\n";
+	   std::cout << buckets[i][j] << ", ";
+
+	   }//end for j
+
+	   std::cout << "\n\n";
 
 
-}//end for i
-*/
+	   }//end for i
+	   */
 	//std::cout << "\n";
 
 	//bubble_sort(array, size);
@@ -334,11 +334,11 @@ for(int i = 0; i <= number_of_buckets - 1; i ++)
 
 	auto finish = std::chrono::high_resolution_clock::now();
 
-//	std::cout << "finished sort: ";
+	//	std::cout << "finished sort: ";
 
 	//print_out_array(new_array, size);
 
-//	std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count() << " ns\n";
+	//	std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count() << " ns\n";
 
 	int duration = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 
@@ -395,13 +395,13 @@ int main( int argc, char** argv ) {
 
 	double min_buckets = (double)size / 10.0;
 
-//	std::cout << "min_buckets: " << min_buckets << "\n";
+	//	std::cout << "min_buckets: " << min_buckets << "\n";
 
 	number_of_buckets = floor((double)size / 10.0);
 
 	number_of_buckets = 10;
 
-//	std::cout << "number_of_buckets = " << number_of_buckets << "\n";
+	//	std::cout << "number_of_buckets = " << number_of_buckets << "\n";
 
 	//int number_of_buckets = 5;
 
@@ -423,7 +423,7 @@ int main( int argc, char** argv ) {
 			if(new_array[j] < new_array[j - 1])
 			{
 
-//				std::cout << "failure at: " << j << ", between: " << new_array[j - 1] << " and " << new_array[j] << "\n";
+				//				std::cout << "failure at: " << j << ", between: " << new_array[j - 1] << " and " << new_array[j] << "\n";
 				in_order = false;
 				fails ++;
 			}//end if
@@ -442,20 +442,28 @@ int main( int argc, char** argv ) {
 
 	//std::cout << "differences: " << differences << " / " << total << " = " << result << "\n";
 
-//	std::cout << "number of buckets: " << number_of_buckets << "\n";
+	//	std::cout << "number of buckets: " << number_of_buckets << "\n";
 
 	double avg = (double)sum / (double)repetitions;
 
-//	std::cout << "avg time: " << avg << " ns\n";
+	//	std::cout << "avg time: " << avg << " ns\n";
 
-//	std::cout << "fails in sorts: " << fails_in_sorts << "\n";
+	//	std::cout << "fails in sorts: " << fails_in_sorts << "\n";
 
-//	std::cout << "fails: " << fails << "\n";
+	//	std::cout << "fails: " << fails << "\n";
 
 
 	unsigned int cores = std::thread::hardware_concurrency();
 
-//	std::cout << "cores: " << cores << "\n";
+	if(fails == 0)
+	{
+
+		std::cout << "bbs sorted, ";
+
+	}//end if
+
+
+	//	std::cout << "cores: " << cores << "\n";
 
 	//delete [] new_array;
 

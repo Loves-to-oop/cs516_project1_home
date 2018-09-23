@@ -70,9 +70,9 @@ int bubble_sort(int *array, omp_lock_t mutex,  int size)
 
 	//	std::cout << "size of array: " << size << "\n";
 
-	std::cout << "before, ";
+//	std::cout << "before, ";
 
-	print_out_array(array, size);
+//	print_out_array(array, size);
 
 
 	//int i = 0;
@@ -116,13 +116,13 @@ int bubble_sort(int *array, omp_lock_t mutex,  int size)
 
 
 
-	std::cout << "after, ";
+//	std::cout << "after, ";
+int fails = 0;
+//fails = test_sort(array, size);
 
-int fails = test_sort(array, size);
+//	print_out_array(array, size);
 
-	print_out_array(array, size);
-
-	std::cout << "fails: " << fails << "\n";
+//	std::cout << "fails: " << fails << "\n";
 
 return fails;
 
@@ -177,7 +177,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 
 
-	print_out_array(array, size);
+	//print_out_array(array, size);
 
 
 	auto start = std::chrono::high_resolution_clock::now();
@@ -307,9 +307,9 @@ int total_fails = 0;
 
 fails_in_sorts += total_fails;
 
-	std::cout << "total fails: " << total_fails << "\n";
+//	std::cout << "total fails: " << total_fails << "\n";
 
-
+/*
 for(int i = 0; i <= number_of_buckets - 1; i ++)
 {
 	std::cout << "bucket " << i << ": ";
@@ -323,9 +323,8 @@ for(int i = 0; i <= number_of_buckets - 1; i ++)
 
 	std::cout << "\n\n";
 
-
 }//end for i
-
+*/
 	//std::cout << "\n";
 
 	//bubble_sort(array, size);
@@ -334,11 +333,11 @@ for(int i = 0; i <= number_of_buckets - 1; i ++)
 
 	auto finish = std::chrono::high_resolution_clock::now();
 
-	std::cout << "finished sort: ";
+//	std::cout << "finished sort: ";
 
-	print_out_array(new_array, size);
+//	print_out_array(new_array, size);
 
-	std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count() << " ns\n";
+//	std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count() << " ns\n";
 
 	int duration = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 
@@ -395,13 +394,13 @@ int main( int argc, char** argv ) {
 
 	double min_buckets = (double)size / 10.0;
 
-	std::cout << "min_buckets: " << min_buckets << "\n";
+	//std::cout << "min_buckets: " << min_buckets << "\n";
 
 	number_of_buckets = floor((double)size / 10.0);
 
-	number_of_buckets = 10;
+	//number_of_buckets = 10;
 
-	std::cout << "number_of_buckets = " << number_of_buckets << "\n";
+	//std::cout << "number_of_buckets = " << number_of_buckets << "\n";
 
 	//int number_of_buckets = 5;
 
@@ -423,7 +422,7 @@ int main( int argc, char** argv ) {
 			if(new_array[j] < new_array[j - 1])
 			{
 
-				std::cout << "failure at: " << j << ", between: " << new_array[j - 1] << " and " << new_array[j] << "\n";
+//				std::cout << "failure at: " << j << ", between: " << new_array[j - 1] << " and " << new_array[j] << "\n";
 				in_order = false;
 				fails ++;
 			}//end if
@@ -442,20 +441,26 @@ int main( int argc, char** argv ) {
 
 	//std::cout << "differences: " << differences << " / " << total << " = " << result << "\n";
 
-	std::cout << "number of buckets: " << number_of_buckets << "\n";
+//	std::cout << "number of buckets: " << number_of_buckets << "\n";
 
 	double avg = (double)sum / (double)repetitions;
 
-	std::cout << "avg time: " << avg << " ns\n";
+//	std::cout << "avg time: " << avg << " ns\n";
 
-	std::cout << "fails in sorts: " << fails_in_sorts << "\n";
+//	std::cout << "fails in sorts: " << fails_in_sorts << "\n";
 
-	std::cout << "fails: " << fails << "\n";
+//	std::cout << "fails: " << fails << "\n";
 
+	if(fails == 0)
+	{
+	
+		std::cout << "bbp sorted, ";
+	
+	}//end if
 
 	unsigned int cores = std::thread::hardware_concurrency();
 
-	std::cout << "cores: " << cores << "\n";
+	//std::cout << "cores: " << cores << "\n";
 
 	//delete [] new_array;
 
