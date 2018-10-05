@@ -78,15 +78,27 @@ int bubble_sort(int *array, omp_lock_t mutex,  int size)
 	//#pragma omp parallel for
 	for(int i = 0; i <= size - 1; i ++)
 	{
-
+#pragma omp task
+		{
 		//std::cout << "i: " << i << "\n";
+
+		//	std::cout << "fraction: " << fraction << "\n";
+//#pragma omp critical
+//			std::cout << "thread: " << omp_get_thread_num() << "\n";
 
 //#pragma omp parallel for
 		for(int j = 1; j <= size - 1; j ++)
 		{
 
+
+//#pragma omp task
+			{
 			//std::cout << "j: " << j << "\n";
 
+		//	std::cout << "fraction: " << fraction << "\n";
+		
+		
+#pragma omp critical	
 			if(array[j - 1] > array[j])
 			{
 
@@ -96,7 +108,8 @@ int bubble_sort(int *array, omp_lock_t mutex,  int size)
 				//#pragma omp critical
 				{
 					//omp_set_lock(&mutex);
-//#pragma omp critical
+					//
+				//	#pragma omp critical
 					swap(array, j - 1, j);
 
 
@@ -105,12 +118,12 @@ int bubble_sort(int *array, omp_lock_t mutex,  int size)
 
 			}//end if
 
-
+			}//end inner task
 		}//end for j
 
 
 
-
+		}//end task
 
 	}//end for i
 
@@ -279,6 +292,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 	for(int i = 0; i <= number_of_buckets - 1; i ++)
 	{
 
+//#pragma omp task
 		total_fails += bubble_sort(buckets[i], mutex, bucket_sizes[i]);
 
 		if(bucket_sizes[i] > 0)
@@ -477,7 +491,7 @@ int main( int argc, char** argv ) {
 
 
 		int * new_array = new int[size];
-
+#pragma omp parallel
 		sum += run_bb(array, new_array, size, number_of_buckets);
 
 		int in_order = 1;
