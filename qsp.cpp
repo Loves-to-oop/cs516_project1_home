@@ -4,6 +4,8 @@
 #include <chrono>
 #include <thread>
 #include <assert.h>
+#include <omp.h>
+
 
 // create an array of length size of random numbers
 // returns a pointer to the array
@@ -34,53 +36,81 @@ void swap(int * array, int index1, int index2)
 int partition(int *array, int p, int r)
 {
 
-/* 
- *
- *Array is declared outside of scope of multithreaded area
-so is shared between threads.
+	int i = 0;
+	//int tid = omp_get_thread_num();
+	//#pragma omp critical
+	{
 
-Array is declared outside of scope of multithreaded area shared between threads..
- *
- * */
+
+
+		//}//end critical
+
+
+
+		//			long tid = omp_get_thread_num();
+
+
+		//#pragma omp critical
+		//	std::cout << p << " and " << r << ", tid: " << tid << "\n";
+
+
+	/* 
+	 *:
+	 *Array is declared outside of scope of multithreaded area
+	 so is shared between threads.
+
+	 Array is declared outside of scope of multithreaded area shared between threads..
+	 *
+	 * */
 
 
 	int x = 0;
 
-#pragma omp critical
+	//#pragma omp critical
 	{
 		x = array[r];
 	}//end critical
 
-	int i = p - 1;
+	i = p - 1;
 
 	for(int j = p; j <= r - 1; j ++)
 	{
 
-#pragma omp critical
+		int less_than_or_equals = 0;
+
+		//#pragma omp critical
 		{
+
+
 			if(array[j] <= x)
 			{
 
 				i = i + 1;
 
 
-				//#pragma omp critical
+				//		#pragma omp critical
 				{
 					swap(array, i, j);
+
 				}//end critical
 
-
 			}//end if
+
+
 		}//end critical
 
-	}//end for
+	}//end for j
 
-#pragma omp critical
+	//#pragma omp critical
 	{
 		swap(array, (i + 1), r);
 	}//end critical
 
-	return i + 1;
+
+}//end critical
+return i + 1;
+
+
 
 }//end function
 
@@ -93,26 +123,35 @@ void quick_sort(int *array, int p, int r)
 	if(p < r)
 	{
 
-/* 
- *
- *Works if you make the entire partition section critical.
- *
- * */
+		/* 
+		 *
+		 *Works if you make the entire partition section critical.
+		 *
+		 * */
 
-
-
-//#pragma omp critical
+		//#pragma omp critical
 		q = partition(array, p, r);
 
-#pragma omp parallel
-			{
-				quick_sort(array, p, q - 1);
-			}//end parallel
+#pragma omp task
+		{
 
-#pragma omp parallel
-			{
-				quick_sort(array, q + 1, r);
-			}//end parallel
+			//			long tid = omp_get_thread_num();
+
+			//		std::cout << "first quick sort, tid: " << tid << "\n";
+
+			quick_sort(array, p, q - 1);
+		}//end parallel
+
+#pragma omp task
+		{
+
+			//			long tid = omp_get_thread_num();
+
+			//		std::cout << "second quick sort, tid: " << tid << "\n";
+
+
+			quick_sort(array, q + 1, r);
+		}//end parallel
 
 	}//end if
 }//end function
@@ -129,7 +168,40 @@ void unit_test_quick_sort()
 		{
 			std::cout << j << ", ";
 			int * array = randNumArray( i, i );
+
+			int array2[i];// = new int[i];
+
+			for(int k = 0; k <= i - 1; k ++)
+			{
+
+				array2[k] = array[k];
+
+			}//end for k
+
 			quick_sort(array, 0, i - 1);
+
+			for(int k = 0; k <= i - 1; k ++)
+			{
+
+				bool number_in_sorted_array = false;
+
+				for(int z = 0; z <= i - 1; z ++)
+				{
+
+					if(array2[k] == array[z])
+					{
+
+						number_in_sorted_array = true;
+
+					}//end if
+
+
+				}//end for z
+
+				assert(number_in_sorted_array == true);
+
+			}//end for k
+
 
 			for(int k = 1; k <= i - 1; k ++)
 			{
@@ -190,6 +262,8 @@ int main( int argc, char** argv ) {
 
 	//	omp_set_num_threads( 2 );
 
+
+omp_set_num_threads(44);
 
 	quick_sort(array, 0, size - 1);
 
