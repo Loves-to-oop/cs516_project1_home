@@ -5,7 +5,7 @@
 #include <omp.h>
 #include <chrono>
 #include <thread>
-
+#include <assert.h>
 
 //auto start = std::chrono::high_resolution_clock::now();
 
@@ -60,8 +60,6 @@ int test_sort(int *array, int size)
 }//end function
 
 
-
-
 int bubble_sort(int *array, omp_lock_t mutex,  int size)
 {
 
@@ -83,7 +81,7 @@ int bubble_sort(int *array, omp_lock_t mutex,  int size)
 
 		//std::cout << "i: " << i << "\n";
 
-#pragma omp parallel for
+//#pragma omp parallel for
 		for(int j = 1; j <= size - 1; j ++)
 		{
 
@@ -95,14 +93,14 @@ int bubble_sort(int *array, omp_lock_t mutex,  int size)
 				//swap
 
 
-#pragma omp critical
+				//#pragma omp critical
 				{
-				//omp_set_lock(&mutex);
+					//omp_set_lock(&mutex);
+//#pragma omp critical
+					swap(array, j - 1, j);
 
-				swap(array, j - 1, j);
 
-
-				//omp_unset_lock(&mutex);
+					//omp_unset_lock(&mutex);
 				}//end critical
 
 			}//end if
@@ -176,9 +174,6 @@ int fails_in_sorts = 0;
 int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 {
 
-
-
-
 	//print_out_array(array, size);
 
 
@@ -210,33 +205,28 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 	//https://stackoverflow.com/questions/150355/programmatically-find-the-number-of-cores-on-a-machine
 
-
-
 	//	int cores = sysconf(_SC_NPROCESSORS_ONLN);
 
 	unsigned int cores = std::thread::hardware_concurrency();
 
-
-
 	omp_set_num_threads(cores);
 
-#pragma omp parallel for
+//#pragma omp parallel for
 	for(int i = 0; i <= size - 1; i ++)
 	{
 
-
-		omp_set_lock(&mutex);
-
+		//omp_set_lock(&mutex);
+//#pragma omp critical
 		if(array[i] > max_value)
 		{max_value = array[i];}
 
 
-		omp_unset_lock(&mutex);
+		//omp_unset_lock(&mutex);
 
 
 	}//end for i
 
-#pragma omp parallel for
+//#pragma omp parallel for
 	for(int i = 0; i <= number_of_buckets - 1; i ++)
 	{
 
@@ -247,7 +237,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 
 
-#pragma omp parallel for
+//#pragma omp parallel for
 	for(int i = 0; i <= size - 1; i ++)
 	{
 
@@ -259,12 +249,9 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 		double fraction = (double)array[i] / ((double) max_value + 1);
 
-		//	std::cout << "fraction: " << fraction << "\n";
-
 		int assigned_bucket = floor((fraction) * ((double)number_of_buckets)); 
-		//std::cout << array[i] << " / " << max_value << " * " << number_of_buckets << " = assigned bucket: " << assigned_bucket << "\n";
 
-#pragma omp critical
+//#pragma omp critical
 		{
 
 			//omp_set_lock(&mutex);
@@ -352,6 +339,79 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 }//end function
 
 
+
+void unit_test_sort() 
+{
+	for(int i = 10; i <= 20; i ++)
+	{
+
+		std::cout << "i: " << i << "\n";
+
+		for(int j = 0; j <= 1000; j ++)
+		{
+			std::cout << j << ", ";
+			int * array = randNumArray( i, i );
+
+			int array2[i];// = new int[i];
+
+			for(int k = 0; k <= i - 1; k ++)
+			{
+
+				array2[k] = array[k];
+
+			}//end for k
+
+
+			//		sum += run_bb(array, new_array, size, number_of_buckets);
+
+			int * new_array = new int[i];
+			run_bb(array, new_array,  i, 5);
+
+			for(int k = 0; k <= i - 1; k ++)
+			{
+
+				bool number_in_sorted_array = false;
+				//array[3] = 0;
+				for(int z = 0; z <= i - 1; z ++)
+				{
+
+					if(array2[k] == new_array[z])
+					{
+
+						number_in_sorted_array = true;
+
+					}//end if
+
+
+				}//end for z
+
+				assert(number_in_sorted_array == true);
+
+			}//end for k
+
+
+			for(int k = 1; k <= i - 1; k ++)
+			{
+				//array[k] = 0;
+				assert(new_array[k] > new_array[k - 1]);
+
+				//				std::cout << "array[" << k << "] = " << array[k] << " > " << array[k - 1]; 
+
+				//				std::cout << "\n";
+
+			}//end for k
+
+		}//end for j
+
+
+
+
+	}//end for i
+
+}//end function
+
+
+
 int main( int argc, char** argv ) {
 
 
@@ -386,6 +446,7 @@ int main( int argc, char** argv ) {
 
 	//print_out_array(array, size);
 
+	unit_test_sort();
 
 	int differences = 0;
 
@@ -411,8 +472,8 @@ int main( int argc, char** argv ) {
 
 	int sum = 0;
 
-	for(int i = 0; i <= repetitions - 1; i ++)
-	{
+	//for(int i = 0; i <= repetitions - 1; i ++)
+	//{
 
 
 		int * new_array = new int[size];
@@ -420,27 +481,24 @@ int main( int argc, char** argv ) {
 		sum += run_bb(array, new_array, size, number_of_buckets);
 
 		int in_order = 1;
+		/*
+		   for(int j = 1; j <= size - 1; j ++)
+		   {
 
-		for(int j = 1; j <= size - 1; j ++)
-		{
-
-			if(new_array[j] < new_array[j - 1])
-			{
-
-				//				std::cout << "failure at: " << j << ", between: " << new_array[j - 1] << " and " << new_array[j] << "\n";
-				in_order = false;
-				fails ++;
-			}//end if
+		   if(new_array[j] < new_array[j - 1])
+		   {
+		   in_order = false;
+		   fails ++;
+		   }//end if
 
 
-
-		}//end for j
-
+		   }//end for j
+		   */
 		//std::cout.flush();
 
-		delete new_array;
+		//		delete new_array;
 
-	} //end for i
+	//} //end for i
 
 	//double result = (double)differences / (double)total;
 
@@ -448,22 +506,34 @@ int main( int argc, char** argv ) {
 
 	//	std::cout << "number of buckets: " << number_of_buckets << "\n";
 
-	double avg = (double)sum / (double)repetitions;
+	//double avg = (double)sum / (double)repetitions;
 
-	std::cout << "avg time: " << avg << " ns\n";
+	//std::cout << "avg time: " << avg << " ns\n";
 
 	//	std::cout << "fails in sorts: " << fails_in_sorts << "\n";
 
 	//	std::cout << "fails: " << fails << "\n";
+	/*
+	   if(fails == 0)
+	   {
 
-	if(fails == 0)
-	{
+	   std::cout << "bbp sorted, ";
 
-		std::cout << "bbp sorted, ";
-
-	}//end if
-
+	   }//end if
+	   */
 	unsigned int cores = std::thread::hardware_concurrency();
+
+	std::cout << "after sort: \n";
+
+for(int i = 0; i <= size - 1; i ++)
+{
+
+	std::cout << new_array[i] << ", ";
+
+
+}//end for i
+
+std::cout << "\n";
 
 	//std::cout << "cores: " << cores << "\n";
 
