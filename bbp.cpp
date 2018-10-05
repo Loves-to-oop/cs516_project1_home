@@ -218,7 +218,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 
 
-	omp_set_num_threads(5);
+	omp_set_num_threads(cores);
 
 #pragma omp parallel for
 	for(int i = 0; i <= size - 1; i ++)
