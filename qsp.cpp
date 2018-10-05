@@ -117,6 +117,9 @@ return i + 1;
 void quick_sort(int *array, int p, int r)
 {
 
+//#pragma omp critical
+//	std::cout << "thread: " << omp_get_thread_num() << "\n";
+
 	int q = 0;
 
 
@@ -129,7 +132,7 @@ void quick_sort(int *array, int p, int r)
 		 *
 		 * */
 
-		//#pragma omp critical
+		#pragma omp critical
 		q = partition(array, p, r);
 
 #pragma omp task
@@ -184,7 +187,7 @@ void unit_test_quick_sort()
 			{
 
 				bool number_in_sorted_array = false;
-
+//array[3] = 0;
 				for(int z = 0; z <= i - 1; z ++)
 				{
 
@@ -255,7 +258,7 @@ int main( int argc, char** argv ) {
 	// **************************
 	// **************************
 
-//	unit_test_quick_sort();
+	unit_test_quick_sort();
 
 	auto start = std::chrono::high_resolution_clock::now();
 
@@ -265,6 +268,8 @@ int main( int argc, char** argv ) {
 
 	omp_set_num_threads(44);
 
+#pragma omp parallel
+
 	quick_sort(array, 0, size - 1);
 
 	auto finish = std::chrono::high_resolution_clock::now();
@@ -273,7 +278,9 @@ int main( int argc, char** argv ) {
 
 //	std::cout << "duration: " << duration << " nanoseconds\n";
 
-	/*
+
+	std:: cout << "sort results: \n";
+
 	for(int i = 0; i <= size - 1; i ++)
 	{
 
@@ -282,7 +289,7 @@ int main( int argc, char** argv ) {
 	}//end for i
 
 	std::cout << "\n";
-*/
+
 
 	// delete the heap memory
 	delete [] array;
