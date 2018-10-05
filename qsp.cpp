@@ -255,7 +255,7 @@ int main( int argc, char** argv ) {
 	// **************************
 	// **************************
 
-	unit_test_quick_sort();
+//	unit_test_quick_sort();
 
 	auto start = std::chrono::high_resolution_clock::now();
 
@@ -263,7 +263,7 @@ int main( int argc, char** argv ) {
 	//	omp_set_num_threads( 2 );
 
 
-omp_set_num_threads(44);
+	omp_set_num_threads(44);
 
 	quick_sort(array, 0, size - 1);
 
@@ -271,8 +271,9 @@ omp_set_num_threads(44);
 
 	int duration = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 
-	std::cout << "duration: " << duration << " nanoseconds\n";
+//	std::cout << "duration: " << duration << " nanoseconds\n";
 
+	/*
 	for(int i = 0; i <= size - 1; i ++)
 	{
 
@@ -281,7 +282,7 @@ omp_set_num_threads(44);
 	}//end for i
 
 	std::cout << "\n";
-
+*/
 
 	// delete the heap memory
 	delete [] array;

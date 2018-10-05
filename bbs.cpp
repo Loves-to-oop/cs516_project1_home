@@ -458,7 +458,7 @@ int main( int argc, char** argv ) {
 	if(fails == 0)
 	{
 
-		std::cout << "bbs sorted, ";
+//		std::cout << "bbs sorted, ";
 
 	}//end if
 
