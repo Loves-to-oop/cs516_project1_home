@@ -162,7 +162,7 @@ void quick_sort(int *array, int p, int r)
 
 void unit_test_quick_sort() 
 {
-	for(int i = 10; i <= 20; i ++)
+	for(int i = 10; i <= 100; i ++)
 	{
 
 		std::cout << "i: " << i << "\n";
@@ -211,7 +211,7 @@ void unit_test_quick_sort()
 			for(int k = 1; k <= i - 1; k ++)
 			{
 				//array[k] = 0;
-				assert(array[k] > array[k - 1]);
+				assert(array[k] >= array[k - 1]);
 
 				//				std::cout << "array[" << k << "] = " << array[k] << " > " << array[k - 1]; 
 
@@ -260,7 +260,9 @@ int main( int argc, char** argv ) {
 	// **************************
 	// **************************
 
-//	unit_test_quick_sort();
+	omp_set_num_threads(2);
+
+	//unit_test_quick_sort();
 
 	auto start = std::chrono::high_resolution_clock::now();
 
@@ -268,7 +270,6 @@ int main( int argc, char** argv ) {
 	//	omp_set_num_threads( 2 );
 
 
-	omp_set_num_threads(2);
 
 #pragma omp parallel
 

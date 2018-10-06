@@ -121,8 +121,8 @@ void mergesort(int * array, int beginning, int end)
 
 
 
-#pragma omp critical
-	std::cout << "thread: " << omp_get_thread_num() << "\n";
+//#pragma omp critical
+//	std::cout << "thread: " << omp_get_thread_num() << "\n";
 
 
 	//std::cout << "thread: " << omp_get_thread_num() << "\n";
@@ -185,6 +185,9 @@ void unit_test_sort()
 				array2[k] = array[k];
 
 			}//end for k
+
+	
+
 #pragma omp parallel
 			mergesort(array, 0, i - 1);
 
@@ -271,16 +274,22 @@ void unit_test_sort()
 
 omp_set_num_threads(2);
 
-unit_test_sort();
+//unit_test_sort();
 
 		//void mergesort(int * array, int beginning, int end)
 
 
 //unit_test_sort();
 
+
+//print_out_array(array, size);
+
 #pragma omp parallel
 		mergesort(array, 0, size - 1);
-/*
+
+//		print_out_array(array, size);
+	
+	/*
 		std::cout << "merge sorted array\n";
 
 		for(int i = 0; i <= size - 1; i ++)
