@@ -92,13 +92,37 @@ void merge(int *array, int beginning, int middle, int end)
 }//end function
 
 
+void print_out_array(int *array, int size)
+{
+
+	std::cout << array << ": ";
+
+for(int i = 0; i <= size - 1; i ++)
+{
+
+
+
+
+	std::cout << array[i] << ", ";
+
+
+
+
+
+}//end for i
+
+std::cout << "\n";
+
+
+}//end function
+
 void mergesort(int * array, int beginning, int end)
 {
 
 
 
-//#pragma omp critical
-//	std::cout << "thread: " << omp_get_thread_num() << "\n";
+#pragma omp critical
+	std::cout << "thread: " << omp_get_thread_num() << "\n";
 
 
 	//std::cout << "thread: " << omp_get_thread_num() << "\n";
@@ -109,14 +133,15 @@ void mergesort(int * array, int beginning, int end)
 		int middle = (beginning + end) / 2;
 
 //#pragma omp parallel
-		{
+//		{
 
-#pragma omp task			
+//#pragma omp task			
 		mergesort(array, beginning, middle);
 
-#pragma omp task
+//#pragma omp task
 		mergesort(array, middle + 1, end);
-		}//end parallel
+
+		//		}//end parallel
 	       	
 #pragma omp critical
 merge(array, beginning, middle, end);
@@ -163,6 +188,12 @@ void unit_test_sort()
 #pragma omp parallel
 			mergesort(array, 0, i - 1);
 
+			//print_out_array(array2, i);
+
+			//print_out_array(array, i);
+
+			//std::cout << "\n";
+
 			for(int k = 0; k <= i - 1; k ++)
 			{
 
@@ -189,7 +220,7 @@ void unit_test_sort()
 			for(int k = 1; k <= i - 1; k ++)
 			{
 				//array[k] = 0;
-				assert(array[k] > array[k - 1]);
+				assert(array[k] >= array[k - 1]);
 
 				//assert(array[k] != array[k - 1]);
 						//	std::cout << "array[" << k << "] = " << array[k] << " > " << array[k - 1] << "\n"; 
@@ -238,14 +269,14 @@ void unit_test_sort()
 		// **************************
 
 
-//unit_test_sort();
+omp_set_num_threads(2);
+
+unit_test_sort();
 
 		//void mergesort(int * array, int beginning, int end)
 
 
 //unit_test_sort();
-
-omp_set_num_threads(2);
 
 #pragma omp parallel
 		mergesort(array, 0, size - 1);
