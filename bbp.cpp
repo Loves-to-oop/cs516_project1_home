@@ -229,7 +229,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 	{
 
 		//omp_set_lock(&mutex);
-		//#pragma omp critical
+		#pragma omp critical
 		if(array[i] > max_value)
 		{max_value = array[i];}
 
@@ -272,15 +272,20 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 			//omp_set_lock(&mutex);
 
+	//for(int i = 0; i <= repetitions - 1; i ++)
+	//{
+//#pragma omp critical
+
+#pragma omp critical
+			{
 			int size_of_bucket = bucket_sizes[assigned_bucket];
 
 			//std::cout << "size of bucket: " << size_of_bucket << "\n";
 
-//#pragma omp critical
 			buckets[assigned_bucket][size_of_bucket] = array[i];
 
 			bucket_sizes[assigned_bucket] ++;
-
+			}//end critical
 			//omp_unset_lock(&mutex);
 		}//end critical
 
@@ -298,9 +303,10 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 	for(int i = 0; i <= number_of_buckets - 1; i ++)
 	{
 
-		//#pragma omp task
+		#pragma omp parallel
 		total_fails += bubble_sort(buckets[i], mutex, bucket_sizes[i]);
 
+#pragma omp critical
 		if(bucket_sizes[i] > 0)
 		{
 			//adding current bucket
@@ -358,7 +364,128 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 }//end function
 
+void unit_test_bubble_sort()
+{
 
+
+	for(int i = 10; i <= 50; i ++)
+	{
+
+		std::cout << "i: " << i << "\n";
+
+		for(int j = 1; j <= 30; j ++)
+		{
+			//std::cout << j << ", ";
+			int * array = randNumArray( i, j );
+
+			int array2[i];// = new int[i];
+
+			for(int k = 0; k <= i - 1; k ++)
+			{
+
+				array2[k] = array[k];
+
+			}//end for k
+
+
+			//		sum += run_bb(array, new_array, size, number_of_buckets);
+
+
+//#pragma omp critical
+			//std::cout << "buckets: " << (j % i) << ", ";
+
+
+			int number_of_buckets = 5;
+if(j % i != 0 && j % i != i)
+number_of_buckets = (j % i);
+
+
+int * new_array = new int[i];
+
+
+
+	omp_lock_t mutex;
+
+	omp_init_lock(&mutex);
+
+
+
+#pragma omp parallel
+			bubble_sort(array, mutex, i);
+
+
+			std::cout << "\n\n";
+
+			std::cout << array2 << ": qty: " << i << ", ";
+
+			for(int k = 0; k <= i - 1; k ++)
+			{
+			
+				std::cout << array2[k] << ", ";
+			
+			}//end for k
+
+
+			std::cout << "\n";
+
+
+			std::cout << array << ": ";
+
+
+			for(int k = 0; k <= i - 1; k ++)
+			{
+
+				std::cout << array[k] << ", ";
+
+				bool number_in_sorted_array = false;
+				//array[3] = 0;
+				for(int z = 0; z <= i - 1; z ++)
+				{
+
+					if(array2[k] == array[z])
+					{
+
+						number_in_sorted_array = true;
+
+					}//end if
+
+
+				}//end for z
+
+				assert(number_in_sorted_array == true);
+
+			}//end for k
+
+
+			std::cout << "\n";
+
+			for(int k = 1; k <= i - 1; k ++)
+			{
+				//array[k] = 0;
+				assert(array[k] > array[k - 1]);
+
+				//				std::cout << "array[" << k << "] = " << array[k] << " > " << array[k - 1]; 
+
+				//				std::cout << "\n";
+
+			}//end for k
+
+			delete array;
+
+			delete new_array;
+
+		}//end for j
+
+
+
+
+	}//end for i
+
+
+
+
+
+}//end function
 
 void unit_test_sort() 
 {
@@ -396,7 +523,7 @@ number_of_buckets = (j % i);
 
 			int * new_array = new int[i];
 
-#pragma omp parallel
+//#pragma omp parallel
 			run_bb(array, new_array,  i, number_of_buckets);
 
 
@@ -505,6 +632,8 @@ int main( int argc, char** argv ) {
 
 	//print_out_array(array, size);
 
+	//unit_test_bubble_sort();
+
 	unit_test_sort();
 
 	int differences = 0;
@@ -534,7 +663,7 @@ int main( int argc, char** argv ) {
 
 	int * new_array = new int[size];
 
-#pragma omp parallel
+//#pragma omp parallel
 	run_bb(array, new_array, size, number_of_buckets);
 
 	int in_order = 1;
