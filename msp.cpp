@@ -97,8 +97,8 @@ void mergesort(int * array, int beginning, int end)
 
 
 
-#pragma omp critical
-	std::cout << "thread: " << omp_get_thread_num() << "\n";
+//#pragma omp critical
+//	std::cout << "thread: " << omp_get_thread_num() << "\n";
 
 
 	//std::cout << "thread: " << omp_get_thread_num() << "\n";
@@ -150,7 +150,7 @@ void unit_test_sort()
 		for(int j = 0; j <= 1000; j ++)
 		{
 			std::cout << j << ", ";
-			int * array = randNumArray( i, i );
+			int * array = randNumArray( i, j );
 
 			int array2[i];// = new int[i];
 
@@ -160,7 +160,7 @@ void unit_test_sort()
 				array2[k] = array[k];
 
 			}//end for k
-
+#pragma omp parallel
 			mergesort(array, 0, i - 1);
 
 			for(int k = 0; k <= i - 1; k ++)
@@ -238,7 +238,7 @@ void unit_test_sort()
 		// **************************
 
 
-//unit_test_sort();
+unit_test_sort();
 
 		//void mergesort(int * array, int beginning, int end)
 
@@ -249,7 +249,7 @@ omp_set_num_threads(44);
 
 #pragma omp parallel
 		mergesort(array, 0, size - 1);
-
+/*
 		std::cout << "merge sorted array\n";
 
 		for(int i = 0; i <= size - 1; i ++)
@@ -260,7 +260,7 @@ omp_set_num_threads(44);
 		}//end for i
 
 		std::cout << "\n";
-
+*/
 		// delete the heap memory
 		delete [] array;
 	}//end main

@@ -181,6 +181,8 @@ void unit_test_quick_sort()
 
 			}//end for k
 
+
+#pragma omp parallel
 			quick_sort(array, 0, i - 1);
 
 			for(int k = 0; k <= i - 1; k ++)
@@ -258,7 +260,7 @@ int main( int argc, char** argv ) {
 	// **************************
 	// **************************
 
-	unit_test_quick_sort();
+//	unit_test_quick_sort();
 
 	auto start = std::chrono::high_resolution_clock::now();
 
@@ -276,7 +278,7 @@ int main( int argc, char** argv ) {
 
 	int duration = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 
-//	std::cout << "duration: " << duration << " nanoseconds\n";
+	std::cout << "duration: " << duration << " nanoseconds\n";
 
 
 	std:: cout << "sort results: \n";
