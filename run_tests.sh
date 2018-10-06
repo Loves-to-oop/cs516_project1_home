@@ -10,7 +10,7 @@ tt=$((($(date +%s%N) - $ts)/1000000)) ;
 
 ts=$(date +%s%N) ; 
 
-#./bbp $i 10
+./bbp $i 10
 			
 tt_bbp=$((($(date +%s%N) - $ts)/1000000)) ;
 
