@@ -238,14 +238,14 @@ void unit_test_sort()
 		// **************************
 
 
-unit_test_sort();
+//unit_test_sort();
 
 		//void mergesort(int * array, int beginning, int end)
 
 
 //unit_test_sort();
 
-omp_set_num_threads(44);
+omp_set_num_threads(2);
 
 #pragma omp parallel
 		mergesort(array, 0, size - 1);

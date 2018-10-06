@@ -1,6 +1,6 @@
-echo "size, bbs, bbp" > result.csv
+echo "size, bbs, bbp, mss, msp" > result.csv
 
-for ((i = 10; i <= 10000; i++))
+for ((i = 10; i <= 1000; i+=10))
 do
 ts=$(date +%s%N) ; 
 
@@ -26,8 +26,20 @@ ts=$(date +%s%N) ;
 			
 tt_qsp=$((($(date +%s%N) - $ts)/1000000)) ;
 
-echo "Size: $i bbs: $tt ms, bbp: $tt_bbp ms, qss: $tt_qss ms, qsp: $tt_qsp ms"
+ts=$(date +%s%N) ; 
 
-echo "$i, $tt, $tt_bbp, $tt_qss, $tt_qsp" >> result.csv
+./mss $i 10
+			
+tt_mss=$((($(date +%s%N) - $ts)/1000000)) ;
+
+ts=$(date +%s%N) ; 
+
+./msp $i 10
+			
+tt_msp=$((($(date +%s%N) - $ts)/1000000)) ;
+
+echo "Size: $i bbs: $tt ms, bbp: $tt_bbp ms, qss: $tt_qss ms, qsp: $tt_qsp ms, mss: $tt_mss ms, msp: $tt_msp ms"
+
+echo "$i, $tt, $tt_bbp, $tt_qss, $tt_qsp, $tt_mss, $tt_msp" >> result.csv
 
 done
