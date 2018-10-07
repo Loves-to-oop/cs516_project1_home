@@ -1,4 +1,4 @@
-echo "size, bbs, bbp, mss, msp" > result.csv
+echo "size, bbs, bbp, qss, qsp, mss, msp" > result.csv
 
 for ((i = 10; i <= 1000; i+=10))
 do

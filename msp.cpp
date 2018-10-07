@@ -23,7 +23,7 @@ void merge(int *array, int beginning, int middle, int end)
 //#pragma omp critical
 	for(int i = 0; i <= left_array_size - 1; i++)
 	{
-
+//#pragma omp critical
 		left_array[i] = array[beginning + i];
 
 	}//end for i
@@ -31,7 +31,7 @@ void merge(int *array, int beginning, int middle, int end)
 //#pragma omp critical
 	for(int i = 0; i <= right_array_size - 1; i ++)
 	{
-
+//#pragma omp critical
 		right_array[i] = array[middle + 1 + i];
 
 	}//end for i
@@ -51,7 +51,7 @@ void merge(int *array, int beginning, int middle, int end)
 			if(left_array[i] < right_array[j])
 			{
 
-//#pragma omp critical
+		//		#pragma omp critical
 				array[k] =  left_array[i];
 
 				i++;
@@ -59,7 +59,7 @@ void merge(int *array, int beginning, int middle, int end)
 			}// end if
 			else if(left_array[i] >= right_array[j])
 			{
-//#pragma omp critical
+		//		#pragma omp critical
 				array[k] = right_array[j];
 
 				j++;
@@ -69,14 +69,14 @@ void merge(int *array, int beginning, int middle, int end)
 		}//end if
 		else if(i <= left_array_size - 1)
 		{
-//#pragma omp critical
+		//	#pragma omp critical
 			array[k] =  left_array[i];
 			i ++;
 
 		}// end else if
 		else if(j <= right_array_size - 1)
 		{
-//#pragma omp critical
+		//	#pragma omp critical
 			array[k] = right_array[j];
 			j++;
 
@@ -135,10 +135,12 @@ void mergesort(int * array, int beginning, int end)
 //#pragma omp parallel
 //		{
 
-//#pragma omp task			
+//#pragma omp task
+//#pragma omp single			
 		mergesort(array, beginning, middle);
 
 //#pragma omp task
+//#pragma omp single
 		mergesort(array, middle + 1, end);
 
 		//		}//end parallel
@@ -274,7 +276,7 @@ void unit_test_sort()
 
 omp_set_num_threads(2);
 
-//unit_test_sort();
+unit_test_sort();
 
 		//void mergesort(int * array, int beginning, int end)
 
