@@ -75,10 +75,10 @@ int bubble_sort(int *array, omp_lock_t mutex,  int size)
 
 	//int i = 0;
 
-	//#pragma omp parallel for
+	//#pragma omp for
 	for(int i = 0; i <= size - 1; i ++)
 	{
-#pragma omp task
+//#pragma omp task
 		{
 			//std::cout << "i: " << i << "\n";
 
@@ -86,7 +86,7 @@ int bubble_sort(int *array, omp_lock_t mutex,  int size)
 			//#pragma omp critical
 			//			std::cout << "thread: " << omp_get_thread_num() << "\n";
 
-			//#pragma omp parallel for
+			#pragma omp for
 			for(int j = 1; j <= size - 1; j ++)
 			{
 
@@ -224,7 +224,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 	omp_set_num_threads(2);
 
-	//#pragma omp parallel for
+	#pragma omp for
 	for(int i = 0; i <= size - 1; i ++)
 	{
 
@@ -239,7 +239,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 	}//end for i
 
-	//#pragma omp parallel for
+	#pragma omp parallel for	
 	for(int i = 0; i <= number_of_buckets - 1; i ++)
 	{
 
@@ -251,6 +251,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 
 	//#pragma omp parallel
+#pragma omp for
 	for(int i = 0; i <= size - 1; i ++)
 	{
 
@@ -355,7 +356,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 		//	print_out_array(new_array, size);
 
-		//	std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count() << " ns\n";
+		//std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count() << " ns\n";
 
 		int duration = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 
@@ -700,7 +701,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 		unsigned int cores = std::thread::hardware_concurrency();
 
-		//print_out_final_array(new_array, size, number_of_buckets);
+//		print_out_final_array(new_array, size, number_of_buckets);
 
 		delete new_array;
 

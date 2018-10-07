@@ -278,7 +278,7 @@ int main( int argc, char** argv ) {
 	auto finish = std::chrono::high_resolution_clock::now();
 
 	int duration = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
-
+/*
 	std::cout << "duration: " << duration << " nanoseconds\n";
 
 
@@ -292,7 +292,7 @@ int main( int argc, char** argv ) {
 	}//end for i
 
 	std::cout << "\n";
-
+*/
 
 	// delete the heap memory
 	delete [] array;

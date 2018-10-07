@@ -145,7 +145,7 @@ int * randNumArray( const int size, const int seed ) {
 		//void mergesort(int * array, int beginning, int end)
 
 		mergesort(array, 0, size - 1);
-
+/*
 		for(int i = 0; i <= size - 1; i ++)
 		{
 
@@ -154,7 +154,7 @@ int * randNumArray( const int size, const int seed ) {
 		}//end for i
 
 		std::cout << "\n";
-
+*/
 		// delete the heap memory
 		delete [] array;
 	}//end main

@@ -276,7 +276,7 @@ void unit_test_sort()
 
 omp_set_num_threads(2);
 
-unit_test_sort();
+//unit_test_sort();
 
 		//void mergesort(int * array, int beginning, int end)
 
