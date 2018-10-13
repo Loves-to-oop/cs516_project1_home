@@ -25,7 +25,7 @@ void merge(int *array, int beginning, int middle, int end)
 
 	//#pragma omp critical
 	
-//#pragma omp parallel for
+#pragma omp parallel for
 	for(int i = 0; i <= left_array_size - 1; i++)
 	{
 		//#pragma omp critical
@@ -35,7 +35,7 @@ void merge(int *array, int beginning, int middle, int end)
 
 //#pragma omp parallel for
 	//#pragma omp critical
-//#pragma omp parallel for
+#pragma omp parallel for
 	for(int i = 0; i <= right_array_size - 1; i ++)
 	{
 		//#pragma omp critical
@@ -50,7 +50,7 @@ void merge(int *array, int beginning, int middle, int end)
 	//int sub_array_size = (end - beginning);
 
 
-//#pragma omp parallel for
+#pragma omp parallel for
 	for(int i = beginning; i <= end; i ++)
 	{
 

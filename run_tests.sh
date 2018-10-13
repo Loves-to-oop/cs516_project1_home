@@ -6,7 +6,7 @@ echo "size, qsp" > qsp_result.csv
 echo "size, mss" > mss_result.csv
 echo "size, msp" > msp_result.csv
 
-for ((i = 10; i <= 1000; i+=10))
+for ((i = 10; i <= 10000; i+=100))
 do
 ts=$(date +%s%N) ; 
 
@@ -44,6 +44,12 @@ ts=$(date +%s%N) ;
 			
 tt_msp=$((($(date +%s%N) - $ts)/1000000)) ;
 
+ts=$(date +%s%N) ; 
+
+./msp_w_for $i 10
+			
+tt_msp_w_for=$((($(date +%s%N) - $ts)/1000000)) ;
+
 echo "Size: $i bbs: $tt ms, bbp: $tt_bbp ms, qss: $tt_qss ms, qsp: $tt_qsp ms, mss: $tt_mss ms, msp: $tt_msp ms"
 
 echo "$i, $tt, $tt_bbp, $tt_qss, $tt_qsp, $tt_mss, $tt_msp" >> result.csv
@@ -54,5 +60,6 @@ echo "$i, $tt_qss" >> qss_result.csv
 echo "$i, $tt_qsp" >> qsp_result.csv
 echo "$i, $tt_mss" >> mss_result.csv
 echo "$i, $tt_msp" >> msp_result.csv
+echo "$i, $tt_msp_w_for" >> msp_w_for.csv
 
 done

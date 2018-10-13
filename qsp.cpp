@@ -37,31 +37,6 @@ int partition(int *array, int p, int r)
 {
 
 	int i = 0;
-	//int tid = omp_get_thread_num();
-	//#pragma omp critical
-	{
-
-
-
-		//}//end critical
-
-
-
-		//			long tid = omp_get_thread_num();
-
-
-		//#pragma omp critical
-		//	std::cout << p << " and " << r << ", tid: " << tid << "\n";
-
-
-	/* 
-	 *:
-	 *Array is declared outside of scope of multithreaded area
-	 so is shared between threads.
-
-	 Array is declared outside of scope of multithreaded area shared between threads..
-	 *
-	 * */
 
 
 	int x = 0;
@@ -76,7 +51,7 @@ int partition(int *array, int p, int r)
 	for(int j = p; j <= r - 1; j ++)
 	{
 
-		int less_than_or_equals = 0;
+//		int less_than_or_equals = 0;
 
 		//#pragma omp critical
 		{
@@ -106,11 +81,7 @@ int partition(int *array, int p, int r)
 		swap(array, (i + 1), r);
 	}//end critical
 
-
-}//end critical
 return i + 1;
-
-
 
 }//end function
 
