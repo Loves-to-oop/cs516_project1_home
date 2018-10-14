@@ -307,7 +307,7 @@ int main( int argc, char** argv ) {
 	omp_set_num_threads(threads);
 
 
-	//std::cout << "threads: " << threads << ", CPUs: " << CPUs << "\n";
+	std::cout << "threads: " << threads << ", CPUs: " << CPUs << "\n";
 
 	//omp_set_num_threads(16);
 
