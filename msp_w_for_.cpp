@@ -4,9 +4,6 @@
 #include <cstdlib>
 #include <math.h>
 #include <assert.h>
-#include <thread>
-#include <chrono>
-
 // create an array of length size of random numbers
 // returns a pointer to the array
 
@@ -28,7 +25,7 @@ void merge(int *array, int beginning, int middle, int end)
 
 	//#pragma omp critical
 	
-//#pragma omp parallel for
+#pragma omp parallel for
 	for(int i = 0; i <= left_array_size - 1; i++)
 	{
 		//#pragma omp critical
@@ -38,7 +35,7 @@ void merge(int *array, int beginning, int middle, int end)
 
 //#pragma omp parallel for
 	//#pragma omp critical
-//#pragma omp parallel for
+#pragma omp parallel for
 	for(int i = 0; i <= right_array_size - 1; i ++)
 	{
 		//#pragma omp critical
@@ -53,7 +50,7 @@ void merge(int *array, int beginning, int middle, int end)
 	//int sub_array_size = (end - beginning);
 
 
-//#pragma omp parallel for
+#pragma omp parallel for
 	for(int i = beginning; i <= end; i ++)
 	{
 
@@ -291,26 +288,7 @@ int main( int argc, char** argv ) {
 	// **************************
 
 
-	unsigned CPUs = std::thread::hardware_concurrency();
-
-	int threads = 0;
-
-	if(CPUs == 44)
-	{
-
-		threads = 2;
-
-	}
-	else
-	{
-		threads = CPUs;
-	}
-	omp_set_num_threads(threads);
-
-
-	//std::cout << "threads: " << threads << ", CPUs: " << CPUs << "\n";
-
-	//omp_set_num_threads(16);
+	omp_set_num_threads(2);
 
 //	unit_test_sort();
 
@@ -322,20 +300,13 @@ int main( int argc, char** argv ) {
 
 	//print_out_array(array, size);
 
-
-	auto start = std::chrono::high_resolution_clock::now();
-
 #pragma omp parallel
 	mergesort(array, 0, size - 1);
+
 	//		print_out_array(array, size);
 
-
-	auto finish = std::chrono::high_resolution_clock::now();
-
-	int duration = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
-
-	
-	   //std::cout << "merge sorted array\n";
+	/*
+	   std::cout << "merge sorted array\n";
 
 	   for(int i = 0; i <= size - 1; i ++)
 	   {
@@ -345,9 +316,7 @@ int main( int argc, char** argv ) {
 	   }//end for i
 
 	   std::cout << "\n";
-	   
-	   std::cout << duration << "ns\n";
-
+	   */
 	// delete the heap memory
 	delete [] array;
 }//end main

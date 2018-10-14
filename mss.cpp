@@ -2,6 +2,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <math.h>
+#include <chrono>
 // create an array of length size of random numbers
 // returns a pointer to the array
 
@@ -144,7 +145,15 @@ int * randNumArray( const int size, const int seed ) {
 
 		//void mergesort(int * array, int beginning, int end)
 
+
+	auto start = std::chrono::high_resolution_clock::now();
+
 		mergesort(array, 0, size - 1);
+
+
+	auto finish = std::chrono::high_resolution_clock::now();
+
+	int duration = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 
 		for(int i = 0; i <= size - 1; i ++)
 		{
@@ -154,6 +163,8 @@ int * randNumArray( const int size, const int seed ) {
 		}//end for i
 
 		std::cout << "\n";
+
+		std::cout << duration << "ns\n";
 
 		// delete the heap memory
 		delete [] array;

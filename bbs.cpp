@@ -389,7 +389,7 @@ int main( int argc, char** argv ) {
 
 	int total = 0;
 
-	int repetitions = 10;
+	int repetitions = 1;
 
 	int number_of_buckets = 5;
 
@@ -407,13 +407,13 @@ int main( int argc, char** argv ) {
 
 	int sum = 0;
 
-	for(int i = 0; i <= repetitions - 1; i ++)
+	//for(int i = 0; i <= repetitions - 1; i ++)
 	{
 
 
 		int * new_array = new int[size];
 
-		sum += run_bb(array, new_array, size, number_of_buckets);
+		sum = run_bb(array, new_array, size, number_of_buckets);
 
 		int in_order = 1;
 
@@ -434,7 +434,9 @@ int main( int argc, char** argv ) {
 
 		std::cout.flush();
 
-		delete new_array;
+print_out_array(new_array, size);
+
+delete new_array;
 
 	} //end for i
 
@@ -444,9 +446,11 @@ int main( int argc, char** argv ) {
 
 	//	std::cout << "number of buckets: " << number_of_buckets << "\n";
 
-	double avg = (double)sum / (double)repetitions;
+	//double avg = (double)sum / (double)repetitions;
 
-	//	std::cout << "avg time: " << avg << " ns\n";
+
+
+		std::cout << sum << " ns\n";
 
 	//	std::cout << "fails in sorts: " << fails_in_sorts << "\n";
 

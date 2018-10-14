@@ -1,6 +1,8 @@
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
+#include <chrono>
+
 // create an array of length size of random numbers
 // returns a pointer to the array
 
@@ -104,7 +106,14 @@ int * randNumArray( const int size, const int seed ) {
 		// **************************
 		// **************************
 
+	auto start = std::chrono::high_resolution_clock::now();
 quick_sort(array, 0, size - 1);
+
+	auto finish = std::chrono::high_resolution_clock::now();
+
+	int duration = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
+
+
 
 for(int i = 0; i <= size - 1; i ++)
 {
@@ -115,6 +124,7 @@ for(int i = 0; i <= size - 1; i ++)
 
 std::cout << "\n";
 
+std::cout << duration << "ns\n";
 
 		// delete the heap memory
 		delete [] array;

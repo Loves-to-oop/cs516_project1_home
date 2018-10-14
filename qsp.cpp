@@ -33,35 +33,29 @@ void swap(int * array, int index1, int index2)
 }//end function
 
 
+void print_out_array(int * array, int p, int r);
+
+/*
+ * Ultimately all points before the pivot that is return (i + 1)
+ * are less than the pivot, and those after the pivot 
+ * are greater than the pivot.
+ *
+ * It is using the last value as the pivot value.
+ * So the pivot value is placed in it's correct
+ * place. That index is returned as the pivot.
+ *
+ * i is incremented to keep track of the place the pivot will go,
+ * i.e. each time a value is less than the pivot value it means
+ * there will be that many values below the pivot.
+ *
+ * At the end the last value, being used as the pivot 
+ * value is swapped into that location.
+ */
+
 int partition(int *array, int p, int r)
 {
 
 	int i = 0;
-	//int tid = omp_get_thread_num();
-	//#pragma omp critical
-	{
-
-
-
-		//}//end critical
-
-
-
-		//			long tid = omp_get_thread_num();
-
-
-		//#pragma omp critical
-		//	std::cout << p << " and " << r << ", tid: " << tid << "\n";
-
-
-	/* 
-	 *:
-	 *Array is declared outside of scope of multithreaded area
-	 so is shared between threads.
-
-	 Array is declared outside of scope of multithreaded area shared between threads..
-	 *
-	 * */
 
 
 	int x = 0;
@@ -73,11 +67,10 @@ int partition(int *array, int p, int r)
 
 	i = p - 1;
 
+	//std::cout << "i = " << p << " - 1 = " << i << "\n";
+
 	for(int j = p; j <= r - 1; j ++)
 	{
-
-		int less_than_or_equals = 0;
-
 		//#pragma omp critical
 		{
 
@@ -85,12 +78,22 @@ int partition(int *array, int p, int r)
 			if(array[j] <= x)
 			{
 
+				//			std::cout << "array[" << j << "] = " << array[j] << " <= " << x << "\n";
+
 				i = i + 1;
 
+				//			std::cout << "i: " << i << "\n";
 
 				//		#pragma omp critical
+
+
 				{
+					//				std::cout << "swap " << array[i] << " and " << array[j] << ": ";
 					swap(array, i, j);
+
+
+
+					//					print_out_array(array, p, r);
 
 				}//end critical
 
@@ -101,24 +104,28 @@ int partition(int *array, int p, int r)
 
 	}//end for j
 
+	//	std::cout << "swap " << array[i + 1] << " and " << array[r] << ": ";
+
+
+
 	//#pragma omp critical
 	{
 		swap(array, (i + 1), r);
 	}//end critical
 
+	//	print_out_array(array, p, r);
 
-}//end critical
-return i + 1;
+	//	std::cout << "return i + 1 = " << i + 1 << "\n";
 
-
+	return i + 1;
 
 }//end function
 
 void quick_sort(int *array, int p, int r)
 {
 
-//#pragma omp critical
-//	std::cout << "thread: " << omp_get_thread_num() << "\n";
+	//#pragma omp critical
+	//	std::cout << "thread: " << omp_get_thread_num() << "\n";
 
 	int q = 0;
 
@@ -132,7 +139,7 @@ void quick_sort(int *array, int p, int r)
 		 *
 		 * */
 
-		#pragma omp critical
+#pragma omp critical
 		q = partition(array, p, r);
 
 #pragma omp task
@@ -162,7 +169,7 @@ void quick_sort(int *array, int p, int r)
 
 void unit_test_quick_sort() 
 {
-	for(int i = 10; i <= 20; i ++)
+	for(int i = 10; i <= 100; i ++)
 	{
 
 		std::cout << "i: " << i << "\n";
@@ -181,13 +188,15 @@ void unit_test_quick_sort()
 
 			}//end for k
 
+
+#pragma omp parallel
 			quick_sort(array, 0, i - 1);
 
 			for(int k = 0; k <= i - 1; k ++)
 			{
 
 				bool number_in_sorted_array = false;
-//array[3] = 0;
+				//array[3] = 0;
 				for(int z = 0; z <= i - 1; z ++)
 				{
 
@@ -209,7 +218,7 @@ void unit_test_quick_sort()
 			for(int k = 1; k <= i - 1; k ++)
 			{
 				//array[k] = 0;
-				assert(array[k] > array[k - 1]);
+				assert(array[k] >= array[k - 1]);
 
 				//				std::cout << "array[" << k << "] = " << array[k] << " > " << array[k - 1]; 
 
@@ -223,6 +232,25 @@ void unit_test_quick_sort()
 
 
 	}//end for i
+
+}//end function
+
+
+void print_out_array(int * array, int p, int r)
+{
+
+
+	//std:: cout << "sort results: \n";
+
+	for(int i = p; i <= r - 1; i ++)
+	{
+
+		std::cout << array[i] << ", ";
+
+	}//end for i
+
+	std::cout << "\n";
+
 
 }//end function
 
@@ -258,7 +286,25 @@ int main( int argc, char** argv ) {
 	// **************************
 	// **************************
 
-	unit_test_quick_sort();
+	unsigned CPUs = std::thread::hardware_concurrency();
+
+	int threads = 0;
+
+	if(CPUs == 44)
+	{
+
+		threads = 2;
+
+	}
+	else
+	{
+		threads = CPUs;
+	}
+	omp_set_num_threads(threads);
+
+	//std::cout << "threads: " << threads << ", CPUs: " << CPUs << "\n";
+
+	//unit_test_quick_sort();
 
 	auto start = std::chrono::high_resolution_clock::now();
 
@@ -266,30 +312,32 @@ int main( int argc, char** argv ) {
 	//	omp_set_num_threads( 2 );
 
 
-	omp_set_num_threads(44);
 
 #pragma omp parallel
 
 	quick_sort(array, 0, size - 1);
 
+	//print_out_array(array, 0, size);
+
 	auto finish = std::chrono::high_resolution_clock::now();
 
 	int duration = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
+	
+	   //std::cout << "duration: " << duration << " nanoseconds\n";
 
-//	std::cout << "duration: " << duration << " nanoseconds\n";
 
+	   //std:: cout << "sort results: \n";
 
-	std:: cout << "sort results: \n";
+	   for(int i = 0; i <= size - 1; i ++)
+	   {
 
-	for(int i = 0; i <= size - 1; i ++)
-	{
+	   std::cout << array[i] << ", ";
 
-		std::cout << array[i] << ", ";
+	   }//end for i
 
-	}//end for i
-
-	std::cout << "\n";
-
+	   std::cout << "\n";
+	   
+	   std::cout << duration << " ns\n";
 
 	// delete the heap memory
 	delete [] array;
