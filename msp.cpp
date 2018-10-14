@@ -288,7 +288,7 @@ int main( int argc, char** argv ) {
 	// **************************
 
 
-	omp_set_num_threads(2);
+	omp_set_num_threads(16);
 
 //	unit_test_sort();
 

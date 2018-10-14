@@ -7,3 +7,4 @@ all:
 	g++ -std=c++11 -fopenmp -g qss.cpp -o qss	
 	g++ -std=c++11 -fopenmp -g qsp.cpp -o qsp	
 	g++ -std=c++11 -fopenmp -g msp_w_for_.cpp -o msp_w_for
+	g++ -std=c++11 -fopenmp -g reference.cpp -o reference

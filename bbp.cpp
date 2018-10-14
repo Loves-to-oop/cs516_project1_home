@@ -222,7 +222,7 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 	unsigned int cores = std::thread::hardware_concurrency();
 
-	omp_set_num_threads(2);
+	omp_set_num_threads(16);
 
 	#pragma omp for
 	for(int i = 0; i <= size - 1; i ++)
