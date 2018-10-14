@@ -2,6 +2,9 @@
 #include <sstream>
 #include <cstdlib>
 #include <thread>
+#include <algorithm>
+#include <vector>
+#include <iterator>
 
 // create an array of length size of random numbers
 // returns a pointer to the array
@@ -60,7 +63,22 @@ int main( int argc, char** argv ) {
 	{
 		threads = CPUs;
 	}
-    
+
+	std::vector<int> vector(array, array + size);
+
+	std::sort(vector.begin(), vector.end());
+
+/*
+for(int i = 0; i <= vector.size() - 1; i ++)
+{
+
+	std::cout << vector[i] << ", ";
+
+}//end for i
+
+std::cout << "\n";
+*/
+
     // delete the heap memory
     delete [] array;
 }
