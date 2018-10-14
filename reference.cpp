@@ -1,6 +1,8 @@
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
+#include <thread>
+
 // create an array of length size of random numbers
 // returns a pointer to the array
 
@@ -44,6 +46,20 @@ int main( int argc, char** argv ) {
     // **************************
     
     
+	unsigned CPUs = std::thread::hardware_concurrency();
+
+	int threads = 0;
+
+	if(CPUs == 44)
+	{
+
+		threads = 2;
+
+	}
+	else
+	{
+		threads = CPUs;
+	}
     
     // delete the heap memory
     delete [] array;

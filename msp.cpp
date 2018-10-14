@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include <math.h>
 #include <assert.h>
+#include <thread>
+
 // create an array of length size of random numbers
 // returns a pointer to the array
 
@@ -288,7 +290,26 @@ int main( int argc, char** argv ) {
 	// **************************
 
 
-	omp_set_num_threads(16);
+	unsigned CPUs = std::thread::hardware_concurrency();
+
+	int threads = 0;
+
+	if(CPUs == 44)
+	{
+
+		threads = 2;
+
+	}
+	else
+	{
+		threads = CPUs;
+	}
+	omp_set_num_threads(threads);
+
+
+	//std::cout << "threads: " << threads << ", CPUs: " << CPUs << "\n";
+
+	//omp_set_num_threads(16);
 
 //	unit_test_sort();
 
