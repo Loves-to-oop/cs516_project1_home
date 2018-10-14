@@ -71,4 +71,8 @@ echo "$i, $tt_msp" >> msp_result.csv
 echo "$i, $tt_msp_w_for" >> msp_w_for.csv
 echo "$i, $tt_reference" >> reference.csv
 
+echo "$i, $tt_bbs, $tt_bbp, $tt_reference" > bb.csv
+echo "$i, $tt_mss, $tt_msp, $tt_reference" > ms.csv
+echo "$i, $tt_qss, $tt_qsp, $tt_reference" > qs.csv
+
 done

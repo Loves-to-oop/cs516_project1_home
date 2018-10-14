@@ -8,6 +8,10 @@ echo "size, qsp" > qsp_result_sprout.csv
 echo "size, mss" > mss_result_sprout.csv
 echo "size, msp" > msp_result_sprout.csv
 
+echo "size, bbs, bbp, reference" > bb.csv
+echo "size, mss, msp, reference" > ms.csv
+echo "size, qss, qsp, reference" > qs.csv
+
 #for ((i = 10; i <= 10000; i+=100))
 i=10; 
 while [ $i -lt 10000 ]
@@ -74,6 +78,10 @@ echo "$i, $tt_qsp" >> qsp_result_sprout.csv
 echo "$i, $tt_mss" >> mss_result_sprout.csv
 echo "$i, $tt_msp" >> msp_result_sprout.csv
 echo "$i, $tt_msp_w_for" >> msp_w_for_sprout.csv
+
+echo "$i, $tt, $tt_bbp, $tt_reference" >> bb.csv
+echo "$i, $tt_mss, $tt_msp, $tt_reference" >> ms.csv
+echo "$i, $tt_qss, $tt_qsp, $tt_reference" >> qs.csv
 
 #let "$i++";
 
