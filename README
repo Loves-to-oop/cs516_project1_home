@@ -1,0 +1,11 @@
+The command:
+
+make
+
+will compile all of the cpp files int executables.
+
+To run:
+
+./bbs 10 10
+
+Size of array: 10, seed: 10.

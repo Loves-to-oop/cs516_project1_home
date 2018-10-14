@@ -5,6 +5,7 @@
 #include <math.h>
 #include <assert.h>
 #include <thread>
+#include <chrono>
 
 // create an array of length size of random numbers
 // returns a pointer to the array
@@ -321,13 +322,20 @@ int main( int argc, char** argv ) {
 
 	//print_out_array(array, size);
 
+
+	auto start = std::chrono::high_resolution_clock::now();
+
 #pragma omp parallel
 	mergesort(array, 0, size - 1);
-
 	//		print_out_array(array, size);
 
-	/*
-	   std::cout << "merge sorted array\n";
+
+	auto finish = std::chrono::high_resolution_clock::now();
+
+	int duration = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
+
+	
+	   //std::cout << "merge sorted array\n";
 
 	   for(int i = 0; i <= size - 1; i ++)
 	   {
@@ -337,7 +345,9 @@ int main( int argc, char** argv ) {
 	   }//end for i
 
 	   std::cout << "\n";
-	   */
+	   
+	   std::cout << duration << "ns\n";
+
 	// delete the heap memory
 	delete [] array;
 }//end main

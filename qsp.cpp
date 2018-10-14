@@ -322,11 +322,11 @@ int main( int argc, char** argv ) {
 	auto finish = std::chrono::high_resolution_clock::now();
 
 	int duration = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
-	/*
-	   std::cout << "duration: " << duration << " nanoseconds\n";
+	
+	   //std::cout << "duration: " << duration << " nanoseconds\n";
 
 
-	   std:: cout << "sort results: \n";
+	   //std:: cout << "sort results: \n";
 
 	   for(int i = 0; i <= size - 1; i ++)
 	   {
@@ -336,7 +336,8 @@ int main( int argc, char** argv ) {
 	   }//end for i
 
 	   std::cout << "\n";
-	   */
+	   
+	   std::cout << duration << " ns\n";
 
 	// delete the heap memory
 	delete [] array;

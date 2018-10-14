@@ -714,11 +714,16 @@ int run_bb(int * array, int *new_array, int size, int number_of_buckets)
 
 
 		//#pragma omp parallel
-		run_bb(array, new_array, size, number_of_buckets);
+		double time_ns = run_bb(array, new_array, size, number_of_buckets);
 
 		int in_order = 1;
 
 		unsigned int cores = std::thread::hardware_concurrency();
+
+		print_out_array(new_array, size);
+
+
+		std::cout << time_ns << " ns\n";
 
 //		print_out_final_array(new_array, size, number_of_buckets);
 
