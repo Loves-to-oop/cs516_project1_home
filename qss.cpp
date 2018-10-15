@@ -22,31 +22,27 @@ void swap(int * array, int index1, int index2)
 int partition(int *array, int p, int r)
 {
 
-	int x = array[r];
-
-	int i = p - 1;
+	int i = p;
 
 	for(int j = p; j <= r - 1; j ++)
 	{
 
-		if(array[j] <= x)
+		if(array[j] <= array[r])
 		{
 
-			i = i + 1;
-
 			swap(array, i, j);
+			i++;
 
 
 
-		}//end if
+		}//end if	
 
 
-	}//end for
+	}//end for j
 
-	swap(array, (i + 1), r);
+	swap(array, i, r);
 
-
-	return i + 1;
+	return i;
 
 }//end function
 
@@ -106,25 +102,25 @@ int * randNumArray( const int size, const int seed ) {
 		// **************************
 		// **************************
 
-	auto start = std::chrono::high_resolution_clock::now();
-quick_sort(array, 0, size - 1);
+		auto start = std::chrono::high_resolution_clock::now();
+		quick_sort(array, 0, size - 1);
 
-	auto finish = std::chrono::high_resolution_clock::now();
+		auto finish = std::chrono::high_resolution_clock::now();
 
-	int duration = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
+		int duration = std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
 
 
 
-for(int i = 0; i <= size - 1; i ++)
-{
+		for(int i = 0; i <= size - 1; i ++)
+		{
 
-	std::cout << array[i] << ", ";
+			std::cout << array[i] << ", ";
 
-}//end for i
+		}//end for i
 
-std::cout << "\n";
+		std::cout << "\n";
 
-std::cout << duration << "ns\n";
+		std::cout << duration << "ns\n";
 
 		// delete the heap memory
 		delete [] array;

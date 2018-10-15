@@ -35,89 +35,31 @@ void swap(int * array, int index1, int index2)
 
 void print_out_array(int * array, int p, int r);
 
-/*
- * Ultimately all points before the pivot that is return (i + 1)
- * are less than the pivot, and those after the pivot 
- * are greater than the pivot.
- *
- * It is using the last value as the pivot value.
- * So the pivot value is placed in it's correct
- * place. That index is returned as the pivot.
- *
- * i is incremented to keep track of the place the pivot will go,
- * i.e. each time a value is less than the pivot value it means
- * there will be that many values below the pivot.
- *
- * At the end the last value, being used as the pivot 
- * value is swapped into that location.
- */
 
 int partition(int *array, int p, int r)
 {
 
-	int i = 0;
-
-
-	int x = 0;
-
-	//#pragma omp critical
-	{
-		x = array[r];
-	}//end critical
-
-	i = p - 1;
-
-	//std::cout << "i = " << p << " - 1 = " << i << "\n";
+	int i = p;
 
 	for(int j = p; j <= r - 1; j ++)
 	{
-		//#pragma omp critical
+
+		if(array[j] <= array[r])
 		{
 
-
-			if(array[j] <= x)
-			{
-
-				//			std::cout << "array[" << j << "] = " << array[j] << " <= " << x << "\n";
-
-				i = i + 1;
-
-				//			std::cout << "i: " << i << "\n";
-
-				//		#pragma omp critical
-
-
-				{
-					//				std::cout << "swap " << array[i] << " and " << array[j] << ": ";
-					swap(array, i, j);
+			swap(array, i, j);
+			i++;
 
 
 
-					//					print_out_array(array, p, r);
+		}//end if	
 
-				}//end critical
-
-			}//end if
-
-
-		}//end critical
 
 	}//end for j
 
-	//	std::cout << "swap " << array[i + 1] << " and " << array[r] << ": ";
+	swap(array, i, r);
 
-
-
-	//#pragma omp critical
-	{
-		swap(array, (i + 1), r);
-	}//end critical
-
-	//	print_out_array(array, p, r);
-
-	//	std::cout << "return i + 1 = " << i + 1 << "\n";
-
-	return i + 1;
+	return i;
 
 }//end function
 
@@ -338,7 +280,7 @@ int main( int argc, char** argv ) {
 	   std::cout << "\n";
 	   
 	   std::cout << duration << " ns\n";
-
+	   
 	// delete the heap memory
 	delete [] array;
 }
